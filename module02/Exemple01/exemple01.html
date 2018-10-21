@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Number guessing game</title>
+
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+      .dernierResultat {
+        color: white;
+        padding: 3px;
+      }
+    </style>
+</head>
+
+<body>
+	<h1>Jeu: Devinez le nombre !</h1>
+
+	<p>Nous avons selectionner un nombre aléatoire entre 1 et 100. Essayez de le deviner en 10 tours ou moins. Nous vous donnerons des indices si le nombre est trop grand ou trop petit.</p>
+
+	<div class="form">
+		<label for="proposition">Entrez un nombre: </label><input type="text" id="proposition" class="proposition">
+		<input type="submit" value="Envoyer" class="envoyer">
+	</div>
+
+	<div class="listResultat">
+		<p class="choix"></p>
+		<p class="dernierResultat"></p>
+		<p class="grandOuPetit"></p>
+	</div>
+
+</body>
+
+<script>
+	var nombreAleatoire = Math.floor(Math.random()) + 1;
+
+	var choix = document.querySelector('.choix');
+	var dernierResultat = document.querySelector('.dernierResultat');
+	var grandOuPetit = document.querySelector('grandOuPetit');
+
+	var boutonEnvoyer = document.querySelector('.envoyer');
+	var champProposition = document.querySelector('.proposition');
+
+	var compteurDeProposition = 1;
+	var boutonDeReset;
+  
+	function setGameOver() {
+		champProposition.disabled = true;
+		boutonEnvoyer.disabled = true;
+		boutonDeReset = document.createElement('button');
+		boutonDeReset.textContent = 'Recommencer';
+		document.body.appendChild(boutonDeReset);
+		boutonDeReset.addeventListener('click', relancerJeu);
+	}
+
+	function verifierProposition() {
+		var propositionUtilisateur = Number(champProposition.value);
+		if(compteurDeProposition === 1) {
+			choix.textContent = 'Choix précédents: ';
+		}
+		choix.textContent += propositionUtilisateur + ' ';
+ 
+		if(propositionUtilisateur === nombreAleatoire) {
+			dernierResultat.textContent = 'Bravo, vous avez trouvé le nombre !';
+			dernierResultat.style.backgroundColor = 'green';
+			grandOuPetit.textContent = '';
+			setGameOver();
+		} else if(compteurDeProposition === 10) {
+			dernierResultat.textContent = '!!! PERDU !!!';
+			setGameOver();
+		} else {
+			dernierResultat.textContent = 'Faux !';
+			dernierResultat.style.backgroundColor = 'red';
+			if(propositionUtilisateur < nombreAleatoire) {
+				grandOuPetit.textContent = 'Le nombre saisi est trop petit !';
+			} else if(propositionUtilisateur > nombreAleatoire) {
+				grandOuPetit.textContent = 'Le nombre saisi est trop grand !';
+			}
+		}
+ 
+		compteurDeProposition++;
+		champProposition.value = '';
+		champProposition.focus();
+	}
+  
+	boutonEnvoyer.addeventListener('click', verifierProposition);
+  
+	function relancerJeu() {
+		compteurDeProposition = 1;
+	
+		var listResultat = document.querySelectorAll('.listResultat p');
+		for(var i = 0; i < listResultat.length; i++) {
+			listResultat[i].textContent = '';
+		}
+		boutonDeReset.parentNode.removeChild(boutonDeReset);
+	
+		champProposition.disabled = false;
+		boutonEnvoyer.disabled = false;
+		champProposition.value = '';
+		champProposition.focus();
+	
+		dernierResultat.style.backgroundColor = 'white';
+	
+		nombreAleatoire = Math.floor(Math.random()) + 1;
+  }
+</script>
+</html>

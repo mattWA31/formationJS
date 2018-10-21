@@ -1,0 +1,239 @@
+Conversion des devises
+
+1. Pour la conversion des devises, nous utiliserons deux points finaux :
+
+Fixer’s Symbols Endpoint : https://fixer.io/documentation#supportedsymbols
+Free Currency Converter Endpoint: https://www.currencyconverterapi.com/docs
+
+2. Nous avons besoin de tous les symboles pour obtenir une liste des codes de devises supportés. Nous utiliserons ces données pour remplir les menus déroulants que les utilisateurs utiliseront pour sélectionner les devises à convertir. Ouvrez lib/fixer-service.js et ajoutez cette ligne juste après la fonction chercherCours() :
+
+module.exports = {
+  chercherCours: function(callback) { return get(`/latest&symbols=${symbols}&base=EUR`, callback); },
+  chercherSymbols: function(callback) { return get('/symbols', callback); },
+};
+
+3. Créer un autre fichier, lib/free-currency-service.js, et ajouter le code suivant :
+const https = require('https');
+
+const getConversion = function(url, callback) {
+	
+	https.get(url, function(resp){
+		let data = '';
+		
+		resp.on('data', function(morceau)  {
+			data += morceau;
+		});
+		
+		resp.on('end', function(){ 
+			let json = JSON.parse(data);
+			const key = Object.keys(json)[0];
+			console.log(key);
+			console.log(json[key]);
+			const { val } = json[key];
+			callback({ cours: val });
+		});
+		
+	})
+	.on("error", function(err) {
+		console.log('error');
+		throw new Error(err);
+	});
+};
+
+module.exports = {
+  convertirDevise: function(depuis, cible, callback){ getConversion(`https://free.currencyconverterapi.com/api/v5/convert?q=${depuis}_${cible}&compact=y`, callback); },
+};
+
+4.  Dans le code client, nous devrons calculer le montant de la conversion en multipliant le montant par le taux. Ajoutons maintenant ces deux méthodes de service à notre code serveur Express. Ouvrez server.js et mettez à jour en conséquence :
+
+const { chercherCours, chercherSymbols, } = require('./lib/fixer-service');
+const { convertirDevise } = require('./lib/free-currency-service');
+
+...
+// Insérer juste après get'/api/cours', juste avant l'instruction de redirection
+// Récupérer les symboles
+app.get('/api/symbols', async function(req, res){
+	
+	try {
+		chercherSymbols(function(data){
+			res.setHeader('Content-Type', 'application/json');
+			res.send(data);
+		});
+    
+	} catch (error) {
+		errorHandler(error, req, res);
+    	}
+});
+
+// Convertir Devise
+app.post('/api/convertir', function(req, res){
+	try {
+		const { depuis, cible } = req.body;
+		convertirDevise(depuis, cible, function(data){
+			res.setHeader('Content-Type', 'application/json');
+			res.send(data);
+		});
+	} catch (error) {
+		errorHandler(error, req, res);
+	}
+});
+
+5. Maintenant, notre serveur proxy devrait être en mesure d'obtenir des symboles et des taux de conversion. Notez que /api/convert est une méthode POST. Nous utiliserons un formulaire côté client pour construire l'interface de conversion de devises.
+
+6. Ouvrez public/index.html et mettez à jour le template de conversion en remplaçant le code existant par ceci :
+<script id="conversion-template" type="text/x-handlebars-template">
+  <h1 class="ui header">Conversion de devises</h1>
+  <hr>
+  <div class="ui basic loading segment">
+    <form class="ui form">
+      <div class="three fields">
+        <div class="field">
+          <label>Devise de départ</label>
+          <select class="ui dropdown" name="depuis" id="depuis">
+            <option value="">Selectionner la devise</option>
+            {{#each symbols}}
+              <option value="{{@key}}">{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="field">
+          <label>Devise Cible</label>
+          <select class="ui dropdown" name="cible" id="cible">
+            <option value="">Selectionner la devise</option>
+            {{#each symbols}}
+              <option value="{{@key}}">{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="field">
+          <label>Quantité</label>
+          <input type="number" name="quantite" id="quantite" placeholder="Entrer montant">
+        </div>
+      </div>
+      <div class="ui primary submit button">Convertir</div>
+      <div class="ui error message"></div>
+    </form>
+    <br>
+    <div id="result-segment" class="ui center aligned segment">
+      <h2 id="resultat" class="ui header">
+        0.00
+      </h2>
+    </div>
+  </div>
+</script>
+
+7. Nous utilisons Semantic UI Form pour construire l'interface. Nous utilisons également la notation Handlebars pour remplir les champs déroulants. Ci-dessous se trouve le format JSON des symboles de Fixer :
+{
+  "success": true,
+  "symbols": {
+    "AED": "United Arab Emirates Dirham",
+    "AFN": "Afghan Afghani",
+    "ALL": "Albanian Lek",
+    "AMD": "Armenian Dram",
+  }
+}
+
+8. Notez que les données des symboles sont de type map. Cela signifie que l'information est stockée sous forme de paires clé {{@clé}} et valeur {{this}}. Mettons maintenant à jour public/js/app.js et faisons en sorte qu'il fonctionne avec le nouveau template. Ouvrez le fichier et remplacez le code de la route /conversion par le suivant :
+
+// Exécute la requete en POST, calcule et affiche les résultats de conversion
+	const recupererConversionResultats = function() {
+		// Extraire les données du formulaire
+		const depuis = $('#depuis').val();
+		const cible = $('#cible').val();
+		const montant = $('#quantite').val();
+		// Envoyer les données post au serveur Express(proxy)
+		
+		$.ajax({
+			url: 'http://localhost:3000/api/convertir',
+			type: 'POST',
+			data: {
+				depuis: depuis,
+				cible: cible
+			},
+			success: function(result){
+				const { cours } = result;
+				console.log(montant);
+				const resultat = cours * montant;
+				$('#resultat').html(`${cible} ${resultat}`);
+				$('#result-segment').removeClass('loading');
+			},
+			error: function(error){
+				showError(error);
+				$('#result-segment').removeClass('loading');
+			}
+		});
+	};
+
+	// Gérer l'événement clic du bouton de conversion
+	const convertirCoursManager = function() {
+		if ($('.ui.form').form('is valid')) {
+			// masquer le message d'erreur
+			$('.ui.error.message').hide();
+			// Post au serveur Express
+			$('#result-segment').addClass('loading');
+			recupererConversionResultats();
+			// Empêcher la page d'être envoyée au serveur
+			return false;
+		}
+		return true;
+	};
+
+router.add('/conversion', function(){
+		// Afficher d'abord le chargement
+		let html = conversionTemplate();
+		el.html(html);
+		
+		$.ajax({
+			url: 'http://localhost:3000/api/symbols',
+			success: function(result){
+				const { symbols } = result;
+				html = conversionTemplate({ symbols });
+				el.html(html);
+				$('.loading').removeClass('loading');
+				// Valider les entrées de formulaire
+				$('.ui.form').form({
+					fields: {
+						depuis: 'empty',
+						cible: 'empty',
+						montant: 'decimal',
+					},
+				});
+				// Spécifie le gestionnaire du Submit
+				$('.submit').click(convertirCoursManager);
+			},
+			error: function(error){
+				showError(error);
+			}
+		});
+	});
+
+9. Rafraîchir la page. Sélectionnez quelques devises de votre choix et entrez un montant. Puis cliquez sur le bouton Convertir :
+
+ops ! On vient d'avoir un scénario d'erreur. Au moins, nous savons que notre code de gestion des erreurs fonctionne. Pour comprendre pourquoi l'erreur se produit, retournez au code du serveur et regardez la fonction /api/convert. Plus précisément, regardez la ligne qui dit const { from, to } = req.body ;.
+
+10. Il semble qu'Express soit incapable de lire les propriétés de l'objet de requête. Pour résoudre ce problème, nous avons besoin d'installer un intergiciel qui peut nous aider à le résoudre :
+
+	npm install body-parser
+
+11. Ensuite, mettez à jour le code du serveur comme suit :
+
+const bodyParser = require('body-parser');
+...
+
+/** Place this code right before the error handler function **/
+app.use(bodyParser.urlencoded({
+  extended: true,
+}));
+
+app.use(bodyParser.json());
+// Parse POST data as URL encoded data
+app.use(bodyParser.urlencoded({
+  extended: true,
+}));
+
+// Parse POST data as JSON
+app.use(bodyParser.json());
+
+12. Redémarrez le serveur et rafraîchissez le navigateur. Essayez de faire une autre conversion. Cela devrait maintenant fonctionner.
+
+13. Concentrons-nous maintenant sur le dernier page - les taux de change historiques. Commençons par la vue.

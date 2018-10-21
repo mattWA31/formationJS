@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les fonctions en JavaScript</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1>Les fonctions</h1>
+        <script>
+            
+			(function IIFE(){
+				alert( "Hello!" );
+			})();
+			
+			(function (){
+				alert("Salut la terre");
+			})();
+			
+			// Parce qu'une IIFE n'est qu'une fonction, et que les fonctions créent un scope de variable, 
+			// l'utilisation d'une IIFE de cette façon est souvent utilisée pour déclarer des variables 
+			// qui n'affecteront pas le code environnant en dehors de l'IIFE
+			var a = 42;
+
+			(function IIFE(){
+				var a = 10;
+				alert("A l'interieur de l'IIFE, a = " + a );	// 10
+			})();
+
+			alert("A l'exterieur de l'IIFE, a = " + a );
+			
+        </script>
+    </body>
+</html>

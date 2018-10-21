@@ -1,0 +1,23 @@
+Servons-nous en et voyons comment elle fonctionne. D'abord créons une chaîne dans la console:
+
+let myData = 'Toulouse,Paris,Tarbes,Bordeaux,Marseille,Lyon';
+
+Scindons-la à chaque virgule:
+let myArray = myData.split(',');
+myArray;
+
+Pour terminer, trouvons la taille du nouveau tableau et retrouvons quelques-uns de ses éléments?:
+myArray.length;
+myArray[0]; // le premier élément du tableau
+myArray[1]; // le deuxième élément du tableau
+myArray[myArray.length-1]; // le dernier élément du tableau
+
+Vous pouvez également faire le contraire avec la méthode join(). Essayons?:
+let myNewString = myArray.join(',');
+myNewString;
+
+
+Une autre façon de convertir un tableau en chaîne consiste à se servir de la méthode toString(). toString() est plus simple au plan des arguments que join(), car elle ne prend pas de paramétre, mais elle est plus limitée. Avec join() vous pouvez diversifier les séparateurs (essayez de lancer la commande du point 4 avec un caractère autre que la virgule).
+
+let dogNames = ["Rocket","Flash","Bella","Slugger"];
+dogNames.toString(); //Rocket,Flash,Bella,Slugger

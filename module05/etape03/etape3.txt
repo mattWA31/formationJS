@@ -1,0 +1,7 @@
+Client-side Routing
+
+1. modification de app.js
+	suppression des 2 dernière ligne
+	remplacer les par le code sous Déclaration router
+
+

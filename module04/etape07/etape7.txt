@@ -1,0 +1,130 @@
+Taux de change historiques
+
+1. La mise en œuvre de cette fonctionnalité sera comme la combinaison des tâches de la première et de la deuxième page. Nous allons construire un petit formulaire dans lequel l'utilisateur devra entrer une date. Lorsque l'utilisateur clique sur soumettre, les taux de change pour la date spécifiée seront affichés sous forme de tableau. Pour ce faire, nous utiliserons l'Historical Rates Endpoint de l'API Fixer. La requête API ressemble à ceci :
+	
+	https://data.fixer.io/api/2013-12-24?access_key=VOTRE_API_KEY&base=GBP&symbols=USD,CAD,EUR
+
+Et la réponse ressemblera à ceci :
+
+{
+  "success": true,
+  "historical": true,
+  "date": "2013-12-24",
+  "timestamp": 1387929599,
+  "base": "GBP",
+  "rates": {
+    "USD": 1.636492,
+    "EUR": 1.196476,
+    "CAD": 1.739516
+  }
+}
+
+2. Ouvrez lib/fixer-service.js et ajouter :
+
+  // Placer juste après chercherSymbols
+  chercherHistoriqueCours: function(date) { return get(`/${date}&symbols=${symbols}&base=EUR`); },
+
+3. Ouvrez server.js et ajoutez ce code :
+const { chercherRates, chercherSymbols, chercherHistoriqueCours } = require('./lib/fixer-service');
+...
+// Placer après '/api/convert' fonction
+
+// Récupérer les taux de change par date
+app.post('/api/historique', function(req, res){
+	try {
+		const { date } = req.body;
+		chercherHistoriqueCours(date, function(data){
+			res.setHeader('Content-Type', 'application/json');
+			res.send(data);
+		});
+    
+	} catch (error) {
+		errorHandler(error, req, res);
+	}
+});
+
+4. Ouvrir index.html. Supprimer le template historique existant que nous avons utilisé comme remplissage et le remplacer par ce qui suit :
+<script id="historique-template" type="text/x-handlebars-template">
+  <h1 class="ui header">Historique des taux</h1>
+  <hr>
+  <form class="ui form">
+    <div class="field">
+      <label>Choisir date</label>
+      <div class="ui calendar" id="calendar">
+        <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          <input type="text" placeholder="Date" id="date">
+        </div>
+      </div>
+    </div>
+    <div class="ui primary submit button">Chercher Cours</div>
+    <div class="ui error message"></div>
+  </form>
+
+  <div class="ui basic segment">
+    <div id="historique-table"></div>
+  </div>
+</script>
+
+5. npm install semantic-ui-calendar
+
+6. Retournez à public/index.html et incluez-le dans la section scripts :
+<script src="scripts/semantic-ui-css/semantic.min.js"></script>
+<script src="scripts/semantic-ui-calendar/dist/calendar.min.js"></script>
+
+Pour afficher les historiques des cours, nous allons simplement réutiliser le template des cours. Ouvrez ensuite public/js/app.js et mettez à jour le code de route existant pour /historique :
+const chercherHistoriqueCours = function(){
+		const date = $('#date').val();
+		
+		$.ajax({
+			url: 'http://localhost:3000/api/historique',
+			type: "POST",
+			data: {
+				date: date
+			},
+			success: function(result){
+				const base = result.base;
+				const cours = result.rates;
+				const html = coursTemplate({ base, date, cours });
+				$('#historique-table').html(html);
+				$('.segment').removeClass('loading');
+			},
+			error: function(error){
+				showError(error);
+				$('.segment').removeClass('loading');
+			} 
+		});
+	};
+
+	const historiqueCoursManager = function () {
+		if ($('.ui.form').form('is valid')) {
+			// cacher le message d'erreur
+			$('.ui.error.message').hide();
+			// affiche le chargement
+			$('.segment').addClass('loading');
+			chercherHistoriqueCours();
+			// Empeche la page d'envoyer au serveur
+			return false;
+		}
+		return true;
+	};
+
+router.add('/historique', function() {
+  // Afficher formulaire
+		const html = historiqueTemplate();
+		el.html(html);
+		// Activer le date picker
+		$('#calendar').calendar({
+			type: 'date',
+			formatter: { //format date to yyyy-mm-dd
+				date: date => new Date(date).toISOString().split('T')[0],
+			},
+		});
+		// Valider la date
+		$('.ui.form').form({
+			fields: {
+				date: 'empty',
+			},
+		});
+		$('.submit').click(historiqueCoursManager);
+});

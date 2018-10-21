@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Découverte de jQuery</title>
+        <meta charset='utf-8'>
+    </head>
+    <body>
+        <h1>Découverte de jQuery</h1>
+        <p>Un premier paragraphe</p>
+        <p>Un deuxième paragraphe</p>
+        
+        <!--On inclut la librairie jQuery-->
+        <script src='jquery-3.3.1.js'></script>
+        
+		
+        <!--On écrit notre code JavaScript / jQuery-->
+        <script>
+            $(document).ready(function(){
+                
+                $('p').click(function(){
+                    $(this).hide();
+                });
+                
+            });
+        </script>
+		
+		<!-- 
+			Notez dans cet exemple l’utilisation du mot clef this. Ce mot clef nous 
+			sert à faire référence à l'objet jQuery (et donc à l'élément HTML) 
+			actuellement cliqué. Cela nous permet de ne cacher que le paragraphe 
+			qui est cliqué. 
+		-->
+  </body>
+</html>

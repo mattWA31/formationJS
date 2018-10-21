@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Devinez le nombre !</title>
+
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+        body {
+            width: 50%;
+            max-width: 800px;
+            min-width: 480px;
+            margin: 0 auto;
+        }
+        .dernierResultat {
+            color: white;
+            padding: 3px;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Jeu: Devinez le nombre !</h1>
+
+<p>Nous avons selectionner un nombre aléatoire entre 1 et 100. Essayez de le deviner en 10 tours ou moins. Nous vous donnerons des indices si le nombre est trop grand ou trop petit.</p>
+
+<div class="form">
+    <label for="proposition">Entrez un nombre: </label><input type="text" id="proposition" class="proposition">
+    <input type="submit" value="Envoyer" class="submit">
+</div>
+
+<div class="listResultat">
+    <p class="choix"></p>
+    <p class="dernierResultat"></p>
+    <p class="grandOuPetit"></p>
+</div>
+
+<script>
+    // Your JavaScript goes here
+</script>
+</body>
+</html>

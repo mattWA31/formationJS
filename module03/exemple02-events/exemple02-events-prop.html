@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Les évènements</title>
+		<meta charset="utf-8">
+	</head>
+	
+	<body>
+		<h1 id="gros_titre">Les évènements</h1>
+		
+		<p>Cliquez-moi, cliquez-moi !</p>
+		<p>Un deuxième <strong>paragraphe</strong></p>
+	</body>
+	<script>
+		//On accède a notre premier paragraphe
+		var p1 = document.querySelector('p');
+		
+		/*
+		 * Création d'un gestionnaire d'évènements pour
+		 * l'évènement "onclick"
+		 */
+		p1.onclick = function(){
+			this.innerHTML = '<strong>Bravo !</strong>';
+			this.style.color = 'orange';
+		};
+	</script>
+</html>

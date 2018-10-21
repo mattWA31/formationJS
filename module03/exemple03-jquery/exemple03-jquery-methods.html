@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Découverte de jQuery</title>
+        <meta charset='utf-8'>
+    </head>
+    <body>
+        
+		
+		<h1>Gestion d'évènements en jQuery</h1>
+		<!-- 
+        <p class="p1">Un premier paragraphe</p>
+        <p class="help">Je peux vous aider ?</p>
+		
+		<label for='prenom'>Entrez votre prénom</label>
+        <input type='text' id='prenom' name='prenom'>
+		
+		<p>Dernier caractère tapé : <span id='ascii'></span></p>
+		-->
+		<form>
+            <select>
+                <option value='c1' selected='selected'>Choix 1</option>
+                <option value='c2'>Choix 2</option>
+            </select>
+            <input type='submit' value='Envoyer'>
+        </form>
+        
+        <!--On inclut la librairie jQuery-->
+        <script src='jquery-3.3.1.js'></script>
+        
+        <!--On écrit notre code JavaScript / jQuery-->
+        <script>
+			/*
+            $(document).ready(function(){
+                
+                $('p').dblclick(function(){
+                    $(this).hide();
+                });
+                
+            });
+			
+			$(document).ready(function(){
+                
+                $('.help').hide();
+                $('.p1').mouseenter(function(){
+                    $('.help').show();
+                });
+                $('.p1').mouseleave(function(){
+                    $('.help').hide();
+                });
+                
+            });
+			
+			
+			$(document).ready(function(){
+                
+                //On cache help par défaut
+                $('.help').hide();
+                
+                $('.p1').hover(
+                    function(){$('.help').show();},
+                    function(){$('.help').hide();}
+                );  
+                
+            });
+			
+			$(document).ready(function(){
+                
+                //Si une touche est enfoncée, le champ est bleu
+                $('#prenom').keydown(function(){
+                    $(this).css('background-color', 'blue');
+					$(this).css('color', 'white');
+                });
+                
+                //Si on relâche la touche, le champ devient orange
+                $('#prenom').keyup(function(){
+                    $(this).css('background-color', 'orange');
+                })
+               
+            });
+			
+			$(document).ready(function(){
+                
+                $('#prenom').keypress(function(e){
+                    //On passe le code ASCII en argument à fromCharCode()
+                    var touche = String.fromCharCode(e.which);
+                    $('#ascii').text(touche);
+                });
+               
+            });*/
+			
+			/*
+			Dans l’exemple ci-dessus, on récupère le code ASCII correspondant au caractère 
+			tapé avec e.which, qu’on retransforme immédiatement avec string.fromCharCode().
+
+			On place le résultat dans une variable touche et on affiche ce que contient 
+			notre variable dans un élément span grâce à la méthode text().
+			*/
+			
+			$(document).ready(function(){
+                
+                $('form').submit(function(){
+                    alert('Formulaire envoyé');
+                });
+               
+            });
+        </script>
+    </body>
+</html>

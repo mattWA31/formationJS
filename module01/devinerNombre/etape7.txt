@@ -1,0 +1,26 @@
+1. Tout d'abord, ouvrez votre programme dans un navigateur.
+
+2. Ensuite, ouvrez les outils de développement de votre navigateur et assurez-vous que l'onglet de la console JavaScript est ouvert.
+
+3. Tapez champProposition et la console vous montrera que la variable contient un élément <input>. Vous remarquerez également que la console complète automatiquement les noms d'objets existant dans l'environnement d'exécution, y compris vos variables!
+
+4. Maintenant, tapez ce qui suit :
+	champProposition.value = 'Hello';
+   La propriété value représente la valeur courante entrée dans un champs de texte. Vous verrez qu'en entrant cette commande nous avons    changé ce que c'est.
+
+5. Tapez maintenant choix and appuyez sur entrée. La console vous montrera que la variable contient un élément <p>.
+
+6. Maintenant, essayez d'entrer la ligne suivante:
+	choix.value
+   Le navigateur va retourner undefined, parce que value n'existe pas dans le paragraphe.
+
+7. Pour changer le texte dans le paragraphe vous aurez besoin de  la propriété textContent à la place.
+   Essayez ceci :
+	choix.textContent = 'Où est mon paragraphe ?';
+
+8. Maintenant, pour des trucs amusants. Essayez d'entrer les lignes ci-dessous, une par une 
+	choix.style.backgroundColor = 'yellow';
+	choix.style.fontSize = '200%';
+	choix.style.padding = '10px';
+	choix.style.boxShadow = '3px 3px 6px black';
+   Chaque élément d'une page possède une propriété de style , qui contient elle-même un objet dont les propriétés contiennent tous les    styles CSS en ligne appliqués à cet élément. Cela nous permet de définir dynamiquement de nouveaux styles CSS sur des éléments en    utilisant JavaScript.

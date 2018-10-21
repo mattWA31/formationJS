@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les fonctions en JavaScript</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1>Les fonctions</h1>
+        <script>
+            
+			// Considérons cette fonction
+			function fabriquerAjout(x){
+				// Ici le parametre x est une variable locale
+				
+				// La fonction interne ajout() utilise la variable x
+				function ajout(y){
+					return y + x;
+				};
+				
+				// On retourne la définition de la fonction ajout(y).
+				return ajout;
+			}
+			
+			// La référence à la fonction interne ajout(...) qui est renvoyée à chaque appel de la fonction externe fabriquerAjout(...) 
+			// est capable de se rappeler la valeur x qui a été passée à fabriquerAjout(...). 
+			// Maintenant, utilisons fabriquerAjout(...) :
+			
+			// La fonction plusUn récupère une référence de la fonction interne ajout(..) avec une closure sur le parametre 'x' de la fonction
+			// externe fabriquerAjout(...)
+			var plusUn = fabriquerAjout(1);
+			
+			// La fonction plusDix récupère une référence de la fonction interne ajout(..) avec une closure sur le parametre 'x' de la fonction
+			// externe fabriquerAjout(...)
+			var plusDix = fabriquerAjout(10);
+			
+			alert(plusUn(3));
+			alert(plusUn(41));
+			alert(plusDix(13));
+			
+			// En savoir plus sur le fonctionnement de ce code :
+
+			// 1. Quand nous appelons fabriquerAjout(1), nous récupérons une référence à son ajout(...) interne
+			// qui mémorise x comme 1. Nous appelons cette fonction plusUn(...).
+			// 2. Quand nous appelons fabriquerAjout(10), nous récupérons une autre référence à son ajout(...) interne 
+			// qui mémorise x comme 10. Nous appelons cette fonction référence plusDix(...).
+			
+			// 3. Quand nous appelons plusUn(3), il ajoute 3 (son y intérieur) au 1 (mémorisé par x), et nous obtenons 4 comme résultat.
+			// 4. Quand nous appelons plusDix(13), il ajoute 13 (son y intérieur) au 10 (mémorisé par x), et nous obtenons 23 comme résultat.
+
+			// Ne vous inquiétez pas si cela semble étrange et déroutant au premier abord - ça peut l'être ! 
+			// Il faudra beaucoup d'entraînement pour bien le comprendre.	
+
+
+			// MODULES:
+			function Utilisateur(){
+				var nomUtilisateur, motDePasse;
+				
+				function seConnecter(nom, pass){
+					nomUtilisateur = nom;
+					motDePasse = pass;
+					
+					// Faire le traitement de la connexion
+				};
+				
+				var apiPublic = {
+					connexion: seConnecter
+				};
+				
+				return apiPublic;
+			}
+			
+			// Création d'une instance du module Utilisateur
+			var matthieu = Utilisateur();
+			matthieu.connexion("matthieu", "123456789");
+			
+			// La fonction Utilisateur() sert de scope externe qui contient comme variable le nom d'utilisateur et le mot de passe, 
+			// ainsi que la fonction interne seConnecter(); ce sont tous des attributs internes privés du module Utilisateur qui ne 
+			// sont pas accessibles du monde extérieur.
+			
+			// Exécuter Utilisateur() crée une instance du module utilisateur -- un nouveau scope entier est créé, 
+			// et donc une toute nouvelle copie de chacune de ces variables/fonctions internes. Nous assignons cette instance à matthieu.
+			// Si nous relançons Utilisateur(), nous obtiendrons une nouvelle instance entièrement séparée de matthieu.
+			
+        </script>
+    </body>
+</html>

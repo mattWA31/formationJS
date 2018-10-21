@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Découverte de jQuery</title>
+        <meta charset='utf-8'>
+    </head>
+    <body>
+        <h1>Découverte de jQuery</h1>
+        <p>Ce paragraphe n'apparaîtra pas</p>
+        <p>Celui-ci non plus</p>
+        
+        <!--On inclut la librairie jQuery-->
+        <script src='jquery-3.3.1.js'></script>
+        
+        <!--On écrit notre code JavaScript / jQuery-->
+		<!-- 
+			Ici, nous réalisons deux opérations en une : on commence par accéder à tous 
+			les paragraphes de notre page HTML avec $('p') et on applique directement la 
+			méthode hide() à l'objet jquery retourné. Pour cela, on utilise le symbole 
+			point (".") comme on avait déjà l'habitude de le faire en JavaScript. 
+		-->
+        <script>
+            $('p').hide();
+        </script>
+    </body>
+</html>

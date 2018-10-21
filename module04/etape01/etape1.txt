@@ -1,0 +1,36 @@
+1. Rendez-vous dans le répertoire de votre espace de travail et créez le dossier projet-taux. Ouvrez le dossier ddans votre éditeur favori et créez les fichiers et dossiers suivants en utilisant le terminal :
+
+touch server.js
+mkdir public lib
+mkdir public\js
+touch public\index.html
+touch public\js\app.js
+
+2. Ensuite, créez le fichier package.json en exécutant la commande suivante dans le terminal :
+
+npm init -y
+
+3. Vous devriez obtenir le contenu suivant généré pour vous :
+
+{
+  "name": "projet-taux",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+
+4. Installons maintenant les dépendances de base nécessaires à notre projet. Exécutez la commande suivante dans votre terminal :
+
+npm install jquery semantic-ui-css handlebars vanilla-router express
+
+5. Une fois l'installation des paquets terminée, passez à la section suivante pour commencer à construire la base de l'application.

@@ -1,0 +1,63 @@
+Routage côté client
+
+Pour contrôler le routage dans l'environnement du navigateur, nous devons mettre en œuvre le routage côté client. Il existe de nombreuses bibliothèques de routage côté client qui peuvent  aider. Pour notre projet, nous utiliserons le vanilla-router, qui est une bibliothèque très facile à utiliser.
+
+Si vous vous souvenez bien, nous avions déjà inclus toutes les bibliothèques JavaScript dont nous avons besoin dans index.html. Par conséquent, nous pouvons appeler la classe Routeur tout de suite. Supprimez les deux dernières instructions que vous avez ajoutées à app.js et remplacez-les par ce code :
+
+// Declaration du Router 
+const router = new Router({
+  mode: 'history',
+  page404: function(chemin){
+    const html = errorTemplate({
+      color: 'yellow',
+      title: 'Error 404 - Page NOT Found!',
+      message: `Le chemin '/${path}' n'existe pas sur le site`,
+    });
+    el.html(html);
+  },
+});
+
+router.add('/', function() {
+  let html = coursTemplate();
+  el.html(html);
+});
+
+router.add('/conversion', function() {
+  let html = conversionTemplate();
+  el.html(html);
+});
+
+router.add('/historique', function() {
+  let html = historiqueTemplate();
+  el.html(html);
+});
+
+// Naviguer dans l'application jusqu'à l'url courante
+router.navigateTo(window.location.pathname);
+
+ // Mettre en surbrillance le menu actif lors du rafraîchissement/rechargement de la page
+const link = $(`a[href$='${window.location.pathname}']`);
+link.addClass('active');
+
+$('a').on('click', function(event){
+  // Bloquer le chargement des pages du navigateur
+  event.preventDefault();
+
+  // Mettre en surbrillance le menu actif au moment du clic
+  const target = $(event.target);
+  $('.item').removeClass('active');
+  target.addClass('active');
+
+  // Naviguer vers l'url cliquée
+  const href = target.attr('href');
+  const chemin = href.substr(href.lastIndexOf('/'));
+  router.navigateTo(chemin);
+});
+
+Les liens devraient maintenant fonctionner. Mais nous avons un problème. Cliquer sur le lien /conversion ou historique, puis actualiser le navigateur. Nous obtenons la même erreur qu'avant - Cannot GET /conversion. Pour résoudre ce problème, allez sur server.js et ajoutez cette instruction juste avant le code d'écoute :
+
+	// Rediriger tout le trafic vers index.html
+	app.use( function(req, res) { return res.sendFile(`${__dirname}/public/index.html`); });
+
+
+Nous avons maintenant implémenté le code nécessaire pour créer notre squelette d'application à page unique. Commençons maintenant à dresser la liste des taux de change les plus récents.

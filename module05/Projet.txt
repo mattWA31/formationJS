@@ -1,0 +1,85 @@
+# Projet : Application météo
+
+-------
+
+## Fonctionnalités souhaitées :
+
+Afficher le nom d'une ville  
+Pour cette ville afficher une icône qui représente sa météo.  
+Pour cette ville afficher la température ainsi que la description.  
+Pour cette ville afficher une image de fond qui représente sa météo.  
+  
+Il est possible de modifier le nom de la ville.  
+Une fois modifiée, les autres informations doivent refléter les données de la nouvelle ville.  
+
+## Utiliser l'api Openweathermap :
+
+Créer un compte gratuit sur openweathermap et générer une clé.
+
+L'url à contacter est : 
+http://api.openweathermap.org/data/2.5/weather?q=Toulouse&appid=<votre clé d'api>&lang=fr&units=metric
+
+Elle prend la ville en paramètres (le q=Toulouse).
+
+Tester l'url.
+
+Exemple de données correctes :
+{ coord: { lon: 1.44, lat: 43.6 },
+  weather: [ { id: 804, main: 'Clouds', description: 'couvert', icon: '04n' } ],
+  base: 'stations',
+  main:
+   { temp: 20,
+     pressure: 1016,
+     humidity: 82,
+     temp_min: 20,
+     temp_max: 20 },
+  visibility: 10000,
+  wind: { speed: 7.7, deg: 140 },
+  clouds: { all: 90 },
+  dt: 1539300600,
+  sys:
+   { type: 1,
+     id: 5535,
+     message: 0.0519,
+     country: 'FR',
+     sunrise: 1539237869,
+     sunset: 1539278177 },
+  id: 2972315,
+  name: 'Toulouse',
+  cod: 200 }
+
+## Conseils :
+
+1. Commencer par structurer le projet (voir le projet de conversion des devises)
+2. Installer jquery, handlebars, vanilla-router, express, axios
+3. Importer ces différentes libs dans index.html
+4. Commencer avec un template simple statique sans variable à afficher
+5. Une fois le template affiché, commencer à traiter les API
+6. Utiliser le console.log(variable) pour afficher le contenu des variables
+7. Ne pas hésiter à se documenter sur les sites officiels de jquery, handlebars etc...
+8. Plusieurs solutions sont possibles.
+9. La modification de la ville n'est pas à faire au début
+10. Se concentrer au début avec une seule ville, et aller chercher les bonnes informations de cette ville et les afficher
+11. Dans les données correctes, nous avons besoin : 
+	du nom de la ville : attribut name
+	de la température : stockée dans l'objet main.temp
+	des conditions : stockés dans l'objet weather.main
+	de la description: stockée dans l'objet weather.description
+	(voir l'exemple json plus haut)
+
+12. Je vous propose d'utiliser le fichier css suivant pour les icônes de météo :
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.css" >
+
+Les icônes qui nous interessent sont disponibles avec les balises <i> :
+<i class="wi wi-day-rain"></i>
+<i class="wi wi-day-cloudy"></i>
+<i class="wi wi-day-sunny"></i>
+<i class="wi wi-day-snow"></i>
+<i class="wi wi-day-fog"></i>
+<i class="wi wi-day-sleet"></i>
+
+S'inspirer de l'architecture client local <----------> server local <-------------> API distante
+
+A vous de jouer !
+
+

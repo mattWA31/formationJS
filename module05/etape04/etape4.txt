@@ -1,0 +1,17 @@
+Client-side Routing
+
+1. creer le fichier lib/meteo-service.js
+
+2. ajouter la const test dans le fichier server.js
+	ne pas oublier d'importer la méthode getMeteo en haut
+
+3. installer body-parser
+
+3. Modifier le fichier server.js
+	commenter le bloc de test
+	et décommenter l'etape 2
+	
+
+
+
+

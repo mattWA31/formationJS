@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les évènements</title>
+        <meta charset="utf-8">
+		<style>
+			div#contenu {
+				border: 1px solid cyan;
+				background-color: #29B;
+				padding: 20px;
+				margin: 10px;
+				color: white;
+				font-size: 20px;
+			}
+		</style>
+    </head>
+    
+    <body>
+        <h1 id="gros_titre">Les évènements</h1>
+        
+		<div id="contenu">
+			<p id="paragraphe">Un paragraphe.</p>
+		</div>
+        
+    </body>
+    <script>
+        //On accède à nos éléments
+        let contenu = document.querySelector('#contenu');
+		let paragraphe = document.querySelector('#paragraphe');
+		
+		// On demande a contenu de réagir en cas de click
+		contenu.addEventListener('click', message);
+		
+		function message(event){
+			this.innerHTML = 'Element déclencheur : ' + event.target;
+			this.innerHTML += '<br />Element portant le gestionnaire d\'évènement : ' + event.currentTarget;
+			this.innerHTML += '<br />Type d\'evenement déclenché : ' + event.type;
+		}
+		
+        
+        
+        
+    </script>
+</html>

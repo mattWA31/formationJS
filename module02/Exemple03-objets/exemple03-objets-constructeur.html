@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Objets</title>
+</head>
+
+<body>
+
+  
+	<script>
+		function creerNouvellePersonne(nom){
+			let obj = {};
+			obj.nom = nom;
+			obj.salutation = function(){
+				alert('Salut ! Je m\'appelle ' + this.nom + '.');
+			};
+			return obj;
+		}
+		
+		// Copier ces lignes dans la console :
+		// let matthieu = creerNouvellePersonne('Matthieu');
+		// matthieu.nom;
+		// matthieu.salutation();
+		
+		// 2eme étape:
+		// On remplace la fonction précédente par le constructeur suivant :
+		/*
+		
+		function Personne(nom){
+			this.nom = nom;
+			this.salutation = function(){
+				alert('Bonjour ! Je m\'appelle ' + this.nom + '.');
+			}
+		}
+		
+		*/
+		
+		// Etape 3: Utilisation du constructeur
+		/*
+		
+		let personne1 = new Personne('Bob');
+		let personne2 = new Personne('Sarah');
+		
+		*/
+		// Copier ces lignes dans la console :
+		// personne1.nom
+		// personne1.salutation()
+		// personne2.nom
+		// personne2.salutation()
+		
+		
+		// Etape 4 : Version finalisé du constructeur
+		/*
+		
+		function Personne(prenom, nom, age, genre, interets) {
+			this.nom = {
+				'prenom': prenom,
+				'nom': nom
+			};
+			this.age = age;
+			this.genre = genre;
+			this.interets = interets;
+			this.bio = function() {
+				alert(this.nom.prenom + ' ' + this.nom.nom + ' a ' + this.age + ' ans et aime ' + this.interets[0] + ' et ' + this.interets[1] + '.');
+			};
+			this.salutation = function() {
+				alert('Bonjour ! Je m\'appelle' + this.nom.prenom + '.');
+			};
+		};
+		
+		let personne1 = new Personne('Bob', 'Smith', 32, 'homme', ['musique', 'ski']);
+		
+		*/
+    </script>
+</body>
+
+    
+</html>

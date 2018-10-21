@@ -1,0 +1,14 @@
+Construction du projet
+
+touch server.js
+mkdir public lib
+mkdir public\js
+touch public\index.html
+touch public\js\app.js
+
+2. npm init -y
+
+3. npm install jquery handlebars vanilla-router express
+
+4. créer fichier server.js
+5. créer fichier index.html

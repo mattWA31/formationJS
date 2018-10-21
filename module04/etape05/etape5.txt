@@ -1,0 +1,163 @@
+Liste des dernier cours
+
+1. créer le fichier lib/fixer-service.js. C'est ici que nous allons écrire le code d'aide pour notre serveur Express afin de demander facilement des informations à Fixer. Copier le code suivant :
+
+const http = require('http');
+
+const symbols = 'EUR,USD,GBP,AUD,BTC,KES,JPY,CNY';
+
+const api = {
+	baseURL: 'http://data.fixer.io/api',
+	access_key: "<VOTRE_CLE_API>",
+}
+
+// Fonction de requête générique GET
+const get = function(url, callback) {
+	
+	http.get(api.baseURL + url + '&access_key=' + api.access_key, function(resp){
+		let data = '';
+		
+		resp.on('data', function(chunk) {
+			data += chunk;
+		});
+		
+		resp.on('end', function () { 
+			callback(JSON.parse(data));
+		});
+	})
+	.on("error", function(err) {
+		throw new Error(err);
+	});
+};
+
+module.exports = {
+  chercherCours: function(callback) { return get(`/latest&symbols=${symbols}&base=EUR`, callback) },
+};
+
+2. Ouvrez server.js et ajoutez ce code
+
+const { chercherCours } = require('./lib/fixer-service');
+...
+// Placer ce block tout en bas
+const test = function(){
+	chercherCours(function(data){
+		console.log(data);
+	});
+}
+
+test();
+
+3. npm start, regarder les résultat dans la console
+
+4. Commentez maintenant le bloc de test et insérez ce code juste avant l'instruction qui redirige tout le trafic vers index.html :
+
+// Express gestion erreur
+const errorHandler = function (err, req, res) {
+  if (err.response) {
+    // La demande a été faite et le serveur a répondu avec un code d'état qui tombe hors de la plage de 2xx
+    res.status(403).send({ title: 'Le serveur a répondu par une erreur', message: err.message });
+  } else if (err.request) {
+    // La demande a été faite mais aucune réponse n'a été reçue
+    res.status(503).send({ title: 'Impossible de communiquer avec le serveur', message: err.message });
+  } else {
+    // Quelque chose s'est produit lors de la configuration de la demande qui a déclenché une erreur
+    res.status(500).send({ title: 'Une erreur inattendue s'est produite', message: err.message });
+  }
+};
+
+// Récupérer les taux de change les plus récents
+app.get('/api/cours', function(req, res){
+  
+	chercherCours(function(data){
+		if(data.success){
+			res.setHeader('Content-Type', 'application/json');
+			res.send(data);
+		} else {
+			errorHandler(data, req, res);
+		}
+	});
+});
+
+5. Comme nous pouvons le voir, il y a une fonction de gestion des erreurs personnalisée qui est conçue pour gérer différents scénarios d'erreurs, qui peuvent se produire pendant l'exécution du code du serveur. Lorsqu'une erreur se produit, un message d'erreur est généré et renvoyé au client.
+
+6. Confirmons que ce bout de code fonctionne. Redémarrez le serveur Express et naviguez jusqu'à l'URL suivante : localhost:3000/api/cours. Vous devriez voir le même résultat JSON que celui affiché dans la console. Nous pouvons maintenant mettre en place une vue qui affichera ces informations dans un tableau propre et élégant.
+
+7. Ouvrir public/index.html et remplacer le cours-template par ce code :
+
+<script id="cours-template" type="text/x-handlebars-template">
+    <h1 class="ui header">Taux de change</h1>
+    <hr>
+    <div class="ui loading basic segment">
+	<div class="ui horizontal list">
+	    <div class="item">
+		<div class="content">
+		    <div class="ui sub header"><i class="calendar alternate outline icon"></i>Date</div>
+		    <span>{{date}}</span>
+		</div>
+	    </div>
+	    <div class="item">
+		<div class="content">
+		    <div class="ui sub header"><i class="money bill alternate outline icon"></i>Base</div>
+		    <span>{{base}}</span>
+		</div>
+	    </div>
+	</div>
+
+	<table class="ui celled striped selectable inverted table">
+	    <thead>
+		<tr>
+		    <th>Code</th>
+		    <th>Change</th>
+		</tr>
+	    </thead>
+	    <tbody>
+		{{#each cours}}
+		    <tr>
+			<td>{{@key}}</td>
+			<td>{{this}}</td>
+		    </tr>
+		{{/each}}
+	    </tbody>
+	</table>
+    </div>
+</script>
+
+8. Maintenant, mettons à jour notre code dans public/js/app.js pour utiliser ce nouveau template. supprimer la première fonction route.add('/') et la remplacer par ce code :
+
+// Affichage de la bannière d'erreur
+// Son travail consiste simplement à afficher une bannière d'erreur au cas où quelque chose tournerait mal du côté du serveur.
+const showError = function(error) {
+	const { title, message } = error.response.data;
+	const html = errorTemplate({ title, message });
+	el.html(html);
+};
+
+// Afficher les taux de change les plus récents
+	router.add('/', function(){
+		// Afficher d'abord le loading
+		let html = coursTemplate();
+		el.html(html);
+		// Charger les taux de change
+		$.ajax({
+			url: 'http://localhost:3000/api/cours',
+			success: function(result){
+				const base = result.base;
+				const date = result.date;
+				const cours = result.rates;
+				// Afficher le tableau des cours
+				html = coursTemplate({ base, date, cours });
+				el.html(html);
+				// Retirer le chargement
+				$('.loading').removeClass('loading');
+			},
+			error: function(error){
+				showError(error);
+				// Retirer le chargement
+				$('.loading').removeClass('loading');
+			}
+		});
+	});
+
+9. Il suffit maintenant de rafraîchir le navigateur.
+
+10. Ensuite, nous allons construire une interface pour la conversion des devises.

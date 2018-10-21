@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les fonctions en JavaScript</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1>Les fonctions</h1>
+        <script>
+             
+			// Exemple 01
+			function division(x, y){
+                alert(x/y);
+            }
+            
+            division(10, 5);
+			
+			
+			/*
+			// Exemple 02 - return
+			function division(x, y){
+				return x / y;
+			}
+			
+			var resultat = division(10,prompt("entrez un nombre"));
+			resultat += 2;
+			alert(resultat);
+			*/
+			
+			/*
+			// Exemple 03 - gestion erreur
+			function division(x, y){
+				if(y == 0){
+					return "Division par zero impossible";
+				} else if(isNaN(x) || isNaN(y)){
+					return "l'un des arguments n'est pas un nombre";
+				} 
+					
+				return x / y;
+			}
+			
+			var resultat = division(prompt("entrez le nombre1"),prompt("entrez le nombre2"));
+			alert(resultat);
+			*/
+        </script>
+    </body>
+</html>

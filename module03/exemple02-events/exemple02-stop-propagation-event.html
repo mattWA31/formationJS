@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les évènements</title>
+        <meta charset="utf-8">
+		<style>
+			div#contenu {
+				border: 1px solid cyan;
+				background-color: #29B;
+				padding: 20px;
+				margin: 10px;
+				color: white;
+				font-size: 20px;
+			}
+		</style>
+    </head>
+    
+    <body>
+        <h1 id="gros_titre">Les évènements</h1>
+        
+		<div id="contenu">
+			<p id="paragraphe">Un paragraphe.</p>
+		</div>
+        
+    </body>
+    <script>
+        //On accède à nos éléments
+        let contenu = document.querySelector('#contenu');
+		let paragraphe = document.querySelector('#paragraphe');
+		
+		// On utilise la phase de capture
+		contenu.addEventListener('click', messageDiv, true);
+		paragraphe.addEventListener('click', messageP, true);
+		
+		function messageDiv(event){
+			alert('Stop la propagation !');
+			event.stopPropagation();
+		}
+		
+		function messageP(){
+			alert('Ceci ne s\'affichera pas.');
+		}
+		
+        
+        
+        
+    </script>
+</html>

@@ -1,0 +1,5 @@
+Front-end Skeleton Templates
+
+1. Ajout du template dans index.html
+
+2. modification de app.js

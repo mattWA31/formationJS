@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TP Liste de course</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <style>
+      li {
+        margin-bottom: 10px;
+      }
+      li button {
+        font-size: 12px;
+		font-weight: bold;
+        margin-left: 20px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>Ma liste de course</h1>
+
+    <div>
+      <label for="produit">Ajouter un produit:</label>
+      <input type="text" name="produit" id="produit">
+      <button>+ Ajouter</button>
+    </div>
+
+    <ul>
+
+    </ul>
+
+    <script>
+	
+      let liste = $('ul');
+      let input = $('input');
+      let bouton = $('button');
+	  
+	  $('button').on('click', function(){
+		let monProduit = $('input').val();
+        $('input').val('');
+		
+        let itemProduit = document.createElement('li');
+        let itemTexte = document.createElement('span');
+        let itemBouton = document.createElement('button');
+		
+        $(itemProduit).append(itemTexte);
+        $(itemTexte).text( monProduit );
+        $(itemProduit).append(itemBouton);
+        $(itemBouton).text('Supprimer');
+        $('ul').append(itemProduit);
+		
+        $(itemBouton).on('click' , function(e) {
+          $(itemProduit).remove();
+        });
+		
+        input.focus();
+		
+      });
+    </script>
+  </body>
+</html>

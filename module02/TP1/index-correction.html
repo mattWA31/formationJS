@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Générateur d'histoire</title>
+
+    <style>
+    body {
+      font-family: helvetica, sans-serif;
+      width: 350px;
+    }
+    label {
+      font-weight: bold;  
+    }
+    div {
+      padding-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 5px;
+      width: 150px;
+    }
+    p {
+      background: #DBF338;
+      color: #5E2612;
+      padding: 10px;
+      visibility: hidden;
+    }
+    </style>
+  </head>
+
+  <body>
+  
+    <div>
+      <label for="nom">Entrer un nom:</label>
+      <input id="nom" type="text" placeholder="">
+    </div>
+	
+    <div>
+      <label for="fr">FR</label><input id="fr" type="radio" name="enfr" value="fr" checked>
+      <label for="en">EN</label><input id="en" type="radio" name="enfr" value="uk">
+    </div>
+	
+    <div>
+      <button class="generer">Generer histoire aleatoire</button>
+    </div>
+	
+    <p class="histoire"></p>
+    
+	<script>
+		let nom = document.getElementById('nom');
+		let generer = document.querySelector('.generer');
+		let histoire = document.querySelector('.histoire');
+
+		function valeurAleatoire(tableau){
+			return tableau[ Math.floor(Math.random()*tableau.length) ];
+		}
+
+		let textHistoire = "Il faisait 27 degrés dehors, alors :insererx: est allé marcher. Quand il est arrivé à :inserery:, il a regardé avec horreur pendant un moment, puis :insererz:. Bob a vu toute la scène, mais n'était pas surpris - :insererx: pèse 120 kilos, et c'était une journée chaude.";
+		let insererX = ['le goblin Toto','le grand père','le Père Noel'];
+		let insererY = ['la cuisine','Disneyland','Toulouse'];
+		let insererZ = ['a spontanément brûlé','a fondu dans une flaque d\'eau sur le trottoir','s\'est transformé en limace et s\'est enfui en rampant'];
+
+		generer.addEventListener('click', genererHistoire);
+
+		function genererHistoire() {
+			let nouvelleHistoire = textHistoire;
+
+			let xItem = valeurAleatoire(insererX);
+			let yItem = valeurAleatoire(insererY);
+			let zItem = valeurAleatoire(insererZ);
+
+			nouvelleHistoire = nouvelleHistoire.replace(':insererx:',xItem);
+			nouvelleHistoire = nouvelleHistoire.replace(':insererx:',xItem);
+			nouvelleHistoire = nouvelleHistoire.replace(':inserery:',yItem);
+			nouvelleHistoire = nouvelleHistoire.replace(':insererz:',zItem);
+
+			if(nom.value !== '') {
+				let name = nom.value;
+				nouvelleHistoire = nouvelleHistoire.replace('Bob',name);
+			}
+
+			if(document.getElementById("en").checked) {
+				let poid = Math.round(120/0.45359237) + ' pounds';
+				let temperature =  Math.round((27 * 9/5) + 32) + ' fahrenheit';
+				nouvelleHistoire = nouvelleHistoire.replace('27 degré',temperature);
+				nouvelleHistoire = nouvelleHistoire.replace('120 kilos',poid);
+			}
+
+			histoire.textContent = nouvelleHistoire;
+			histoire.style.visibility = 'visible';
+		}
+	</script>
+    
+  </body>
+</html>

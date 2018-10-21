@@ -1,0 +1,49 @@
+﻿1. DEFINITIONS COMPLETES DES VARIABLES ET DES FONCTIONS
+
+let nom = document.getElementById('nom');
+let generer = document.querySelector('.generer');
+var histoire = document.querySelector('.histoire');
+
+function valeurAleatoire(tableau){
+  return tableau[ Math.floor(Math.random()*tableau.length) ];
+}
+
+2. CHAINE DE TEXTE BRUT
+
+Il faisait 27 degrés dehors, alors :insererx: est allé marcher. Quand il est arrivé à :inserery:, il a regardé avec horreur pendant un moment, puis :insererz:. Bob a vu toute la scène, mais n'était pas surpris - :insererx: pèse 120 kilos, et c'était une journée chaude.
+
+
+le goblin Toto
+le grand père
+le Père Noël
+
+
+la cuisine
+Disneyland
+Toulouse
+
+
+a spontanément brûlé
+a fondu dans une flaque d'eau sur le trottoir
+s'est transformé en limace et s'est enfui en rampant.
+
+
+3. ECOUTEUR D'EVENEMENTS ET DEFINITION DE FONCTION PARTIELLE
+
+generer.addEventListener('click', genererHistoire );
+
+function genererHistoire() {
+
+  if(nom.value !== '') {
+    let name = nom.value;
+
+  }
+
+  if(document.getElementById("fr").checked) {
+    let poid = Math.round(120);
+    let temperature =  Math.round(27);
+  }
+
+  histoire.textContent = ;
+  histoire.style.visibility = 'visible';
+}

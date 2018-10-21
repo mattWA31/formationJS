@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Découverte de jQuery</title>
+        <meta charset='utf-8'>
+		<style>
+            .titre{color: blue;}
+        </style>
+    </head>
+    <body>
+        <h1>Manipulation du <mark>DOM</mark></h1>
+        <span id='test'></span>
+		
+		<label for='prenom'>Entrez un prenom : </label>
+        <input type='text' id='prenom' name='prenom'>
+        <span id='sp1'></span><br>
+        <select multiple='multiple'>
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+        </select>
+        <span id='sp2'></span>
+		
+		<h2 class='t'>Utilisation de attr()</h2>
+        <a>Un lien</a><br>
+        <span id='test'></span>
+        
+        <!--On inclut la librairie jQuery-->
+        <script src='jquery-3.3.1.js'></script>
+        
+        <!--On écrit notre code JavaScript / jQuery-->
+        <script>
+			/* 
+            $(document).ready(function(){
+                //On récupère le contenu de h1 avec html()
+                var titre = $('h1').html();
+                
+                //On modifie ensuite le contenu de h1
+                $('h1').html('<mark>DOM</mark> manipulé !');
+                
+                //On affiche le contenu de la variable titre
+                $('#test').html(titre);
+            });
+			
+			
+			$(document).ready(function(){
+                $('#prenom').keyup(function(){
+                    let prenom = $(this).val();
+                    $('#sp1').text(prenom);
+                });
+                
+                $('select').change(function(){
+                    let valeurSelect = $('select').val() || [];
+                    $('#sp2').text(valeurSelect.join(', '));
+                });
+            });*/
+			
+			$(document).ready(function(){
+                //On récupère la valeur de l'attribut class de h1
+                var classH1 = $('h1').attr('class');
+                //On affiche cette valeur dans notre span
+                $('#test').text('Valeur de la class de h1 : ' + classH1);
+                
+                //On modifie la valeur associée à l'att class de h2
+                $('h2').attr('class', 'titre');
+                
+                /*On définit 2 attributs href et target pour a et
+                 *on leur attribue des valeurs*/
+                $('a').attr({
+                    href: 'https://google.fr/',
+                    target: '_blank'
+                });
+            });
+        </script>
+    </body>
+</html>

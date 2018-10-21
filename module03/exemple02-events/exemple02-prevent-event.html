@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les évènements</title>
+        <meta charset="utf-8">
+		<style>
+			div#contenu {
+				border: 1px solid cyan;
+				background-color: #29B;
+				padding: 20px;
+				margin: 10px;
+				color: white;
+				font-size: 20px;
+			}
+			
+			a{
+				color: white;
+			}
+			
+			span {
+				color: yellow;
+			}
+			
+			
+		</style>
+    </head>
+    
+    <body>
+        <h1 id="gros_titre">Les évènements</h1>
+        
+		<div id="contenu">
+			<a href="http://google.fr/">Ce lien est désactivé, mais <span>ce span réagit quand même</span></a>
+			<p id="paragraphe">Un paragraphe.</p>
+		</div>
+        
+    </body>
+    <script>
+        //On accède à nos éléments
+        let contenu = document.querySelector('#contenu');
+		let paragraphe = document.querySelector('#paragraphe');
+		let a = document.querySelector('a');
+		let span = document.querySelector('span');
+		
+		// On utilise la phase de capture
+		a.addEventListener('click', messageA, true);
+		span.addEventListener('click', messageSpan, true);
+		
+		function messageA(event){
+			event.preventDefault();
+		}
+		
+		function messageSpan(){
+			alert("preventDefault() n'empeche pas la propagation.");
+		}
+		
+        
+        
+        
+    </script>
+</html>

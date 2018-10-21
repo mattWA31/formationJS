@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Découverte de jQuery</title>
+        <meta charset='utf-8'>
+    </head>
+    <body>
+        <h1>Découverte de jQuery</h1>
+        <p class='paragraphe'>Ce paragraphe n'apparaîtra pas</p>
+        <p>Pas de problème pour moi !</p>
+        
+        <!--On inclut la librairie jQuery-->
+        <script src='jquery-3.3.1.js'></script>
+        
+        <!--On écrit notre code JavaScript / jQuery-->
+        <script>
+            //On utilise ready en jQuery
+            $(document).ready(function(){
+                //On place tout notre code jQuery ici
+                
+                /*On peut par exemple cacher les éléments possédant
+                 *un attribut class = 'paragraphe'*/
+                $('.paragraphe').hide();
+            });
+        </script>
+		
+		
+		<!-- Exemple02: totalement équivalent -->
+		<!--On écrit notre code JavaScript / jQuery-->
+        <script>
+            //On utilise ready en jQuery
+            $(function(){
+                //On place tout notre code jQuery ici
+                
+                /*On peut par exemple cacher les éléments possédant
+                 *un attribut class = 'para'*/
+                $('.para').hide();
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Devinez le nombre !</title>
+
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+        body {
+            width: 50%;
+            max-width: 800px;
+            min-width: 480px;
+            margin: 0 auto;
+        }
+        .dernierResultat {
+            color: white;
+            padding: 3px;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Jeu: Devinez le nombre !</h1>
+
+<p>Nous avons selectionner un nombre aléatoire entre 1 et 100. Essayez de le deviner en 10 tours ou moins. Nous vous donnerons des indices si le nombre est trop grand ou trop petit.</p>
+
+<div class="form">
+    <label for="proposition">Entrez un nombre: </label><input type="text" id="proposition" class="proposition">
+    <input type="submit" value="Envoyer" class="envoyer">
+</div>
+
+<div class="listResultat">
+    <p class="choix"></p>
+    <p class="dernierResultat"></p>
+    <p class="grandOuPetit"></p>
+</div>
+
+<script>
+    // Ajout des variables pour stocker les données
+
+    // La premiere variable recoit le nombre aléatoire entre 1 et 100, calculé en utilisant un algorithme mathématique
+    let nombreAleatoire = Math.floor(Math.random() * 100) + 1;
+
+    // Les 3 variables suivantes sont chacune faite pour stocker une référence aux paragraphes de résultat dans le HTML
+    // Elle sont utilises pour insérer des valeurs dans les paragraphes plus tard dans le code
+    let choix           = document.querySelector('.choix');
+    let dernierResultat = document.querySelector('.dernierResultat');
+    let grandOuPetit    = document.querySelector('.grandOuPetit');
+
+    // Les deux variables suivantes stockent des références à l'input du formulaire et au bouton envoyer et seront utilisé
+    // pour controler l'envoi de la proposition plus tard.
+    let boutonEnvoyer = document.querySelector('.envoyer');
+    let champProposition = document.querySelector('.proposition');
+
+    // Cette variable stock le compteur de proposition
+    let compteurDeProposition = 1;
+
+    // Cette variable sera utilisé pour stocké un bouton de réinitialisation qui n'existe pas encore
+    let boutonDeReset;
+
+    // Ajout des fonctions
+    function verifierProposition() {
+        // Déclaration d'une variable contient la valeur qui vient d'être saisie dans le champ texte
+        // La fonction Number() permet de s'assurer que la valeur est bien un nombre
+        let propositionUtilisateur = Number(champProposition.value);
+
+        // Bloc de code conditionnel simple
+        if(compteurDeProposition === 1){
+            choix.TextContent = 'Proposition précédentes : ';
+        }
+        choix.textContent += propositionUtilisateur + ' ';
+
+        // bloc de code conditionnel complexe
+        // Vérification si la proposition de l'utilisateur est égale au nombre aléatoire.
+        // Dans ce cas le joueur gagne le jeu. Nous affichons un message d'une couleur verte
+        // a l'utilisateur, nous effacons aussi le contenu de la boite d'information et nous executons
+        // une fonction setGameOver().
+        if(propositionUtilisateur === nombreAleatoire){
+            dernierResultat.textContent = 'Bravo, vous avez trouvé le nombre !';
+            dernierResultat.style.backgroundColor = 'green';
+            grandOuPetit.textContent = '';
+            setGameOver();
+        }
+        // Ce test verifie si l'utilisateur a épuisé ses tentatives possibles
+        else if(compteurDeProposition === 10){
+            dernierResultat.textContent = '!!! PERDU !!!';
+            setGameOver();
+        }
+        // Le cas par défaut suppose que la proposition est fausse. Nous affichons donc le message en rouge
+        // On fait un second test pour vérifier si la proposition est plus grande ou plus petite que la valeur
+        // exacte.
+        else {
+            dernierResultat.textContent = 'Faux !';
+            dernierResultat.style.backgroundColor = 'red';
+            if(propositionUtilisateur < nombreAleatoire){
+                grandOuPetit.textContent = 'Le nombre saisi est trop petit !';
+            } else if (propositionUtilisateur > nombreAleatoire){
+                grandOuPetit.textContent = 'Le nombre saisi est trop grand !';
+            }
+        }
+
+        compteurDeProposition++;
+        champProposition.value = '';
+        champProposition.focus();
+    }
+
+    boutonEnvoyer.addEventListener('click', verifierProposition);
+
+
+
+</script>
+</body>
+</html>

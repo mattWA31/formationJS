@@ -1,0 +1,44 @@
+1. Pour débuter, entrez les lignes suivantes :
+
+	var string = 'La révolution ne sera pas télévisée.';
+	string;
+	
+Comme nous l'avons fait avec les nombres, nous déclarons une variable, 
+l'initialisons avec une valeur de chaîne, puis renvoyons la valeur. 
+La seule différences ici est que lorsque nous écrivons une chaîne, 
+nous la mettons entre guillemets.
+
+2. Si vous ne le faites pas, ou si vous oubliez un des guillemets, vous déclenchez une erreur. 
+Essayez d'entrer une de ces lignes:
+
+	var badString = Voici un test;
+	var badString = 'Voici un test;
+	var badString = Voici un test';
+	
+revenir au cours
+Concaténation de chaînes
+------------------------
+var one = 'Hello, ';
+var two = 'comment allez vous ?';
+var joined = one + two;
+joined;
+
+Dans le dernier exemple, nous avons juste attaché deux chaînes ensemble, mais vous pouvez en attacher 
+autant que vous voulez, pour autant que vous mettiez un signe  +  entre chacune. Essayez ceci:
+	var multiple = one + one + one + one + two;
+	multiple;
+
+Concaténation dans un contexte
+------------------------------
+<button>Pressez moi</button>
+<script>
+let button = document.querySelector('button');
+
+button.onclick = function() {
+  let name = prompt('Quel est votre nom ?');
+  alert('Hello ' + name + ', sympa de vous voir !');
+}
+</script>
+
+Nombres vs chaînes
+------------------

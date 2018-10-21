@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les évènements</title>
+        <meta charset="utf-8">
+    </head>
+    
+    <body>
+        <h1 id="gros_titre">Les évènements</h1>
+        
+        <p>Cliquez-moi, cliquez-moi !</p>
+        <p id="p2">Un deuxième <strong>paragraphe</strong></p>
+    </body>
+    <script>
+        //On accède à notre premier paragraphe
+        var p1 = document.querySelector('p');
+        
+        //On accroche 2 gestionnaires d'évènements à p1
+        p1.addEventListener('click', afficherAlert1);
+        p1.addEventListener('click', afficherAlert2);
+		
+		function afficherAlert1(){
+            alert('Je suis l\'alerte 01 !');
+        };
+		
+		function afficherAlert2(){
+            alert('Je suis l\'alerte 02 !');
+        };
+		
+		// DEUXIEME EXEMPLE
+		var p2 = document.querySelector('#p2');
+		p2.addEventListener('mouseover', changerTexte);
+		p2.addEventListener('mouseout', reinitialiserTexte1);
+		p2.addEventListener('mousedown', changerPoliceEtTexte);
+		p2.addEventListener('mouseup', reinitialiserTexte2);
+		
+		
+		function changerTexte(){
+			this.innerHTML = 'Cliquez-moi maintenant !';
+			this.style.backgroundColor = 'pink';
+		}
+		
+		function changerPoliceEtTexte(){
+			this.innerHTML = 'Bravo !';
+			this.style.color = '#26C';
+			this.style.fontWeight = 'bold';
+			this.style.fontSize = '24px';
+			this.style.marginTop = '0px';
+		}
+		
+		function reinitialiserTexte1(){
+			this.innerHTML = 'Un deuxième <strong>paragraphe</strong>';
+			this.style.backgroundColor = '';
+		}
+		
+		function reinitialiserTexte2(){
+			this.innerHTML = 'Cliquez-moi maintenant !';
+			this.style.color = '';
+			this.style.fontWeight = '';
+			this.style.fontSize = "";
+		}
+        
+        
+    </script>
+</html>

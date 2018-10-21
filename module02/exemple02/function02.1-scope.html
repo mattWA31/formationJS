@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les fonctions en JavaScript</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1>Les fonctions</h1>
+        <script>
+             
+			var a = 2;
+			foo();					// marche car la déclaration de `foo()` est "hoisted" (élevée)
+									
+			function foo() {
+				a = 3;
+				alert("valeur de a dans la fonction foo :" + a );	// 3
+				var a;				// La déclaration de la variable est élevée tout en haut de la fonction
+			}
+
+			alert("valeur de a à l'extérieur de la fonction foo :" + a );
+        </script>
+    </body>
+</html>

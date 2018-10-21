@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Les évènements</title>
+        <meta charset="utf-8">
+    </head>
+    
+    <body>
+        <h1 id="gros_titre">Les évènements</h1>
+        
+		<div id="contenu">
+			<div id="toto">
+				<p id="p1">Un paragraphe.</p>
+				<p id="p2">Un deuxième paragraphe</p>
+			</div>
+		</div>
+        
+    </body>
+    <script>
+        //On accède à notre premier paragraphe
+		
+        let div = document.querySelector('#contenu');
+		let p1 = document.querySelector('#p1');
+		
+		// On crée deux gestionnaire d'évents
+		div.addEventListener('click', messageDiv) // Exemple02: , true);
+		p1.addEventListener('click', messageP) // Exemple02: , true);
+		
+		function messageDiv(){
+			alert('Evenement du div');
+		}
+		
+		function messageP(){
+			alert('Evenement du p');
+		}
+		
+		// Exemple 02
+		let body = document.body;
+		let toto = document.querySelector('#toto');
+		body.addEventListener('click', bouillonementBody);
+		toto.addEventListener('click', bouillonementToto);
+		
+		
+		
+		function bouillonementBody(){
+			alert('bouillonement du Body');
+		}
+        
+		function bouillonementToto(){
+			alert('bouillonement de toto');
+		}
+        
+        
+        
+    </script>
+</html>

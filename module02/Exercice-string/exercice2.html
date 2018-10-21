@@ -1,0 +1,30 @@
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+<div class="output" style="min-height: 125px;">
+
+<ul>
+
+</ul>
+
+</div>
+
+<script>
+let list = document.querySelector('.output ul');
+list.innerHTML = '';
+let villes = ['TARbes', 'PaRIs', 'TouLoUSE', 'MARSEiLle'];
+
+for(let i = 0; i < villes.length; i++) {
+  let ville = villes[i];
+  // Ecrire votre code ici
+
+  let listItem = document.createElement('li');
+  listItem.textContent = ville;
+  list.appendChild(listItem);
+}
+</script>
+
+</body>
+

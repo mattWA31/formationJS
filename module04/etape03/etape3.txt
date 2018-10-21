@@ -1,0 +1,58 @@
+Skelette de la partie front
+
+1. Nous utiliserons Handlebars pour écrire nos vue. JavaScript sera utilisé pour afficher les vue basés sur l'URL courante. La premiere vue que nous créerons servira à afficher les messages d'erreur tels que 404 ou les erreurs du serveur. Placez ce code dans public/index.html juste après la section de navigation :
+
+<!-- Template d'ERREUR -->
+<script id="error-template" type="text/x-handlebars-template">
+  <div class="ui red inverted segment" style="height:250px;">
+    <br>
+    <h2 class="ui center aligned icon header">
+      <i class="exclamation triangle icon"></i>
+      <div class="content">
+        {{title}}
+        <div class="sub header">{{message}}</div>
+      </div>
+    </h2>
+  </div>
+</script>
+
+2. Ensuite, ajoutez les templates suivants qui représenteront une vue pour chaque chemin URL que nous avons spécifié dans la barre de navigation :
+
+<!-- Template Cours des devises -->
+<script id="cours-template" type="text/x-handlebars-template">
+  <h1 class="ui header">Cours des devises</h1>
+  <hr>
+</script>
+
+<!-- Template Conversion -->
+<script id="conversion-template" type="text/x-handlebars-template">
+  <h1 class="ui header">Conversion</h1>
+  <hr>
+</script>
+
+<!-- Template Historique des taux -->
+<script id="historique-template" type="text/x-handlebars-template">
+  <h1 class="ui header">Historique des taux</h1>
+  <hr>
+</script>
+
+3. Ensuite, compilons tous ces modèles dans public/js/app.js. Après compilation, nous allons rendre le template Cours des devises et voir à quoi il ressemble :
+
+window.addEventListener('load', function() {
+  const el = $('#app');
+
+  // Compile Handlebar Templates
+  const errorTemplate = Handlebars.compile($('#error-template').html());
+  const coursTemplate = Handlebars.compile($('#cours-template').html());
+  const conversionTemplate = Handlebars.compile($('#conversion-template').html());
+  const historiqueTemplate = Handlebars.compile($('#historique-template').html());
+
+  const html = coursTemplate();
+  el.html(html);
+});
+
+4. Notez que nous enveloppons tout le code client JavaScript dans un événement load. C'est juste pour s'assurer que toutes les dépendances ont été chargées et que le chargement du DOM est terminé. Rafraîchissez la page et voyez ce que nous avons :
+
+5. Nous faisons des progrès. Maintenant, si vous cliquez sur les autres liens, à l'exception de Cours des devise, le navigateur va essayer de récupérer une nouvelle page et se retrouver avec un message comme celui-ci : Cannot GET /conversion.
+
+Nous construisons une application composé d'une seule page (index.html), ce qui signifie que toute l'action doit se dérouler sur cette page. Nous avons donc besoin d'un moyen de dire au navigateur d'arrêter de chercher de nouvelles pages lorsque l'URL change.

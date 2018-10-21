@@ -1,0 +1,9 @@
+Client-side Routing
+
+1. modifier le fichier index.html -> ajouter les variables
+
+2. finir le fichier app.js
+
+3. Ajouter la gestion d'évenement dans app.js
+
+
